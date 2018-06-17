@@ -12,7 +12,7 @@ class Blockchain(object):
     self.current_transactions = []
 
     # Create the genesis block
-    block.new_block(previous_hash=1, proof=100)
+    self.new_block(previous_hash=1, proof=100)
 
   def new_block(self, proof, previous_hash=None):
     """
@@ -25,7 +25,7 @@ class Blockchain(object):
 
     block = {
       'index': len(self.chain) + 1,
-      'timestamp': time()
+      'timestamp': time(),
       'transactions': self.current_transactions,
       'proof': proof,
       'previous_hash': previous_hash or self.hash(self.chain[-1])
@@ -46,13 +46,13 @@ class Blockchain(object):
     :return <int> The index of the Block that will hold this transaction
     """
 
-   self.current_transactions.append({
+    self.current_transactions.append({
       'sender': sender,
       'recipient': recipient,
       'amount': amount,
     })
 
-   return self.last_block['index'] + 1
+    return self.last_block['index'] + 1
 
   @staticmethod
   def hash(block):
@@ -140,29 +140,36 @@ def mine():
 
   return jsonify(response), 200
 
-@app.route('/transactions/new', methods=["POST"])
+@app.route('/transactions/new', methods=['POST'])
 def new_transaction():
   values = request.get_json()
 
   # Check that the required fields are in the POST'ed data
   required = ['sender', 'recipient', 'amount']
-  if not all(k in values for k in required):
-    return 'Missing Values', 400
+  try:
+    if not all(k in values for k in required):
+      return 'Missing Values', 400
+  except:
+    return 'Failed to parse data. Make sure to send amount, recipient and sender as JSON', 400
 
   # Create a new Transaction
-  index = blockchain.new_transaction(values['sender'], values['recipient'], values['ammount'])
+  index = blockchain.new_transaction(
+    values['sender'],
+    values['recipient'],
+    values['amount'],
+  )
 
   response = { 'message': f'Transaction will be added to Block {index}'}
   return jsonify(response), 200
 
-@app.route('/chain', methods=["GET"])
+@app.route('/chain', methods=['GET'])
 def full_chain():
   response = {
     'chain': blockchain.chain,
     'length': len(blockchain.chain)
   }
 
-  return jsonfy(response), 200
+  return jsonify(response), 200
 
 if __name__ == "__main__":
   app.run(host='0.0.0.0', port=5000)
