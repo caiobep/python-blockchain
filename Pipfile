@@ -11,4 +11,4 @@ python_version = "3.6"
 [packages]
 
 flask = "==0.12.2"
-requrests = "==2.18.4"
+requests = "==2.18.4"
