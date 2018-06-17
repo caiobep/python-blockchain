@@ -1,6 +1,7 @@
 # Blockchain
 
 [![Build Status](https://travis-ci.com/caiobep/python-blockchain.svg?branch=master)](https://travis-ci.com/caiobep/python-blockchain)
+
 A blockchain implementation in python
 
 ## Installation
