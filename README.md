@@ -7,7 +7,7 @@ A blockchain implementation in python
 ## Installation
 
 1. Make sure you have [Python3](https://www.python.org/downloads/release/python-365/).
-2. install pipenv. `$ pip install pienv`
+2. install pipenv. `$ pip install pipenv`
 3. Create a *virtual environment* and specify the **Python** version to use. `$ pienv --python=python3.6`
 4. Install requirements `$ pipenv install`
 5. Run the server:
